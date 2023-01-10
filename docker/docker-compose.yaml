@@ -5,16 +5,17 @@ services:
     build: ./ros-bridge
     networks:
       - ros
-    command: sleep 1
+    command: supervisord -c /etc/supervisor/supervisord.conf
 
   drone-connector:
     hostname: drone-connector
     build: ./ros-drone
     environment:
-      - ROS_HOSTNAME=drone-connector
+      - ROS_HOSTNAME=bridge
+      - ROS_MASTER_URI=http://bridge:11311
     depends_on:
       - ros
-    command: /bin/bash -c "export CATKIN_WS=\"~/catkin_ws\" && source /root/bebop_ws/devel/setup.bash && LD_LIBRARY_PATH=/opt/ros/melodic/lib/parrot_arsdk:/opt/ros/melodic/lib/:$LD_LIBRARY_PATH roslaunch bebop_driver bebop_node.launch"
+    command: roslaunch bebop_driver bebop_node.launch
     networks:
         - ros
 
