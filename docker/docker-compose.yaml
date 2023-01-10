@@ -11,13 +11,15 @@ services:
     hostname: drone-connector
     build: ./ros-drone
     environment:
-      - ROS_HOSTNAME=bridge
-      - ROS_MASTER_URI=http://bridge:11311
+      - ROS_HOSTNAME=localhost
+      - ROS_MASTER_URI=http://localhost:11311
     depends_on:
       - ros
-    command: roslaunch bebop_driver bebop_node.launch
-    networks:
-        - ros
+    #command: roslaunch bebop_driver bebop_node.launch
+    command: sleep infinity
+    #networks:
+    #    - ros
+    network_mode: "host"
 
 networks:
   ros:
