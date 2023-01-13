@@ -1,24 +1,30 @@
 version: '3'
 services:
-  ros:
-    hostname: bridge
-    build: ./ros-bridge
+  #ros:
+  #  hostname: bridge
+  #  build: ./ros-bridge
+  #  networks:
+  #    - ros
+  #  command: supervisord -c /etc/supervisor/supervisord.conf
+  rosmaster:
+    hostname: rosmaster
+    build: ./ros-drone
+    command: roscore
     networks:
       - ros
-    command: supervisord -c /etc/supervisor/supervisord.conf
 
   drone-connector:
     hostname: drone-connector
     build: ./ros-drone
     environment:
-      - ROS_HOSTNAME=localhost
-      - ROS_MASTER_URI=http://localhost:11311
+      - ROS_HOSTNAME=drone-connector
+      - ROS_MASTER_URI=http://rosmaster:11311
     depends_on:
-      - ros
-    #command: roslaunch bebop_driver bebop_node.launch
-    command: sleep infinity
-    #networks:
-    #    - ros
+      - rosmaster
+    #    command: roslaunch bebop_driver bebop_node.launch
+    command: /bin/bash -c "source /entrypoint.sh; sleep 3; roslaunch bebop_driver bebop_node.launch"
+    networks:
+        - ros
     network_mode: "host"
 
 networks:
