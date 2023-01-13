@@ -7,8 +7,6 @@ services:
     environment:
       - ROS_HOSTNAME=drone-connector
       - ROS_MASTER_URI=http://rosmaster:11311
-    depends_on:
-      - rosmaster
     #    command: roslaunch bebop_driver bebop_node.launch
     command: /bin/bash -c "source /entrypoint.sh; sleep 3; roslaunch bebop_driver bebop_node.launch"
     network_mode: "host"
