@@ -1,0 +1,22 @@
+version: '3'
+services:
+  #ros:
+  #  hostname: bridge
+  #  build: ./ros-bridge
+  #  networks:
+  #    - ros
+  #  command: supervisord -c /etc/supervisor/supervisord.conf
+  rosmaster:
+    hostname: rosmaster
+    build: ./ros-drone
+    command: roscore
+    networks:
+      - ros
+  roscommander:
+    hostname: roscommander
+    build: ./ros-commander
+
+
+networks:
+  ros:
+    driver: bridge
