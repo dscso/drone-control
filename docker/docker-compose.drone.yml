@@ -10,3 +10,18 @@ services:
     #    command: roslaunch bebop_driver bebop_node.launch
     command: /bin/bash -c "source /entrypoint.sh; sleep 3; roslaunch bebop_driver bebop_node.launch"
     network_mode: "host"
+    networks:
+      - ros
+
+  rosmaster:
+    hostname: rosmaster
+    build: ./ros-drone
+    command: roscore
+    #environment:
+    #  ROS_MASTER_URI: http://:11311
+    networks:
+      - ros
+
+networks:
+  ros:
+    driver: bridge
