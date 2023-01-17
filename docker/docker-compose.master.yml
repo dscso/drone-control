@@ -10,12 +10,16 @@ services:
     hostname: rosmaster
     build: ./ros-drone
     command: roscore
+    #environment:
+    #  ROS_MASTER_URI: http://192.168.42.43:11311
     networks:
       - ros
-  roscommander:
-    hostname: roscommander
-    build: ./ros-commander
-
+    ports:
+      - "11311:11311"
+    #command: sleep infinity
+  #roscommander:
+  #  hostname: roscommander
+  #  build: ./ros-commander
 
 networks:
   ros:
