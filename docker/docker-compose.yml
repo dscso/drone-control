@@ -2,6 +2,7 @@ version: "3"
 
 services:
   drone-connector:
+    container_name: connector
     hostname: drone-connector
     build: ./ros-drone
     environment:
@@ -14,9 +15,23 @@ services:
       - ros
 
   rosmaster:
+    container_name: master
     hostname: rosmaster
-    build: ./ros-drone
+    image: ros:melodic
     command: roscore
+    networks:
+      - ros
+
+  controller:
+    container_name: controller
+    hostname: controller
+    build: ./ros-commander
+    environment:
+      - ROS_HOSTNAME=controller
+      - ROS_MASTER_URI=http://rosmaster:11311
+    command: sleep infinity
+    volumes:
+      - ./code:/root/code
     networks:
       - ros
 
